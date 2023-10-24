@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+
+import "./App.scss";
+import { useEffect, useState } from "react";
 
 function App() {
+
+  const [name, setName] = useState([]);
+
+  // Run name Function when page loads
+  useEffect(() => {
+    names()
+  }, [name])
+
+  // We will use async/await to fetch the data
+
+  const names = async () => {
+    const response = await fetch('https://jsonplaceholder.typicode.com/albums/');
+
+    // store the data information
+    setName(await response.json())
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Name is written here bellow</h1>
+      <ol className="list-group list-group-numbered">
+          {name.map((data) => {
+            return (
+              <li className="list-group-item" key={data.id}>{data.title}</li>
+            )
+          })}
+      </ol>
     </div>
   );
 }
